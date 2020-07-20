@@ -15,7 +15,7 @@ go build .
 sudo ./gosynflood \
     -t &lt;target IPV4 address&gt; \
     -p &lt;port number&gt; \
-    -i &lt;network interface&gt;
+    -i &lt;network interface&gt; \
     -n &lt;number of packets&gt;
 
 # Example:
