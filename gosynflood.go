@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"os/user"
 	"reflect"
 	"strconv"
 	"strings"
@@ -130,6 +131,11 @@ func exitErr(msg string, reason error) {
 }
 
 func main() {
+	user, err := user.Current()
+	if err != nil || user.Name != "root" {
+		exitErr("Root privileges required for execution", err)
+	}
+
 	target := flag.String("t", "", "Target IPV4 address")
 	tport := flag.Uint("p", 0x0050, "Target Port")
 	ifaceName := flag.String("i", "", "Network Interface")

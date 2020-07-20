@@ -6,6 +6,8 @@ import (
 )
 
 /*
+
+
 #define _GNU_SOURCE
 #include <arpa/inet.h>
 #include <sys/socket.h>
@@ -17,6 +19,8 @@ import (
 #include <linux/if_link.h>
 #include <string.h>
 #include <limits.h>
+
+
 char* getifaces()
 {
     struct ifaddrs *ifaddr, *ifa;
@@ -52,6 +56,8 @@ char* getifaces()
     freeifaddrs(ifaddr);
     return interfaces;
 }
+
+
 */
 import "C"
 

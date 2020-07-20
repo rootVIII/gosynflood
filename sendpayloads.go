@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"reflect"
 	"syscall"
 )
@@ -15,9 +14,7 @@ func (tcp TCPIP) rawSocket() {
 	fd, _ := syscall.Socket(syscall.AF_INET, syscall.SOCK_RAW, syscall.IPPROTO_RAW)
 	err := syscall.BindToDevice(fd, tcp.Adapter)
 	if err != nil {
-		exitErr(fmt.Sprintf("Bind to %s failed", tcp.Adapter), err)
-		fmt.Println(err)
-		os.Exit(1)
+		exitErr("Bind to adapter failed", err)
 	}
 
 	addr := syscall.SockaddrInet4{
