@@ -7,7 +7,6 @@ import (
 
 /*
 
-
 #define _GNU_SOURCE
 #include <arpa/inet.h>
 #include <sys/socket.h>
@@ -56,7 +55,6 @@ char* getifaces()
     freeifaddrs(ifaddr);
     return interfaces;
 }
-
 
 */
 import "C"
