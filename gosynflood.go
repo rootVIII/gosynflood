@@ -19,7 +19,6 @@ import (
 // SYNPacket represents a TCP packet.
 type SYNPacket struct {
 	Payload   []byte
-	NIC       string
 	TCPLength uint16
 	SendMax   uint
 	Adapter   string
