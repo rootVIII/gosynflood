@@ -6,23 +6,23 @@ import (
 	"syscall"
 )
 
-func (tcp TCPIP) rawSocket() {
+func (tcp TCPIP) rawSocket(descriptor int, sockaddr syscall.SockaddrInet4) {
 
-	var dest [4]byte
-	copy(dest[:], tcp.DST[:4])
+	// var dest [4]byte
+	// copy(dest[:], tcp.DST[:4])
 
-	fd, _ := syscall.Socket(syscall.AF_INET, syscall.SOCK_RAW, syscall.IPPROTO_RAW)
-	err := syscall.BindToDevice(fd, tcp.Adapter)
-	if err != nil {
-		exitErr("Bind to adapter failed", err)
-	}
+	// fd, _ := syscall.Socket(syscall.AF_INET, syscall.SOCK_RAW, syscall.IPPROTO_RAW)
+	// err := syscall.BindToDevice(fd, tcp.Adapter)
+	// if err != nil {
+	// 	exitErr("Bind to adapter failed", err)
+	// }
 
-	addr := syscall.SockaddrInet4{
-		Port: int(tcp.DstPort),
-		Addr: dest,
-	}
+	// addr := syscall.SockaddrInet4{
+	// 	Port: int(tcp.DstPort),
+	// 	Addr: dest,
+	// }
 
-	err = syscall.Sendto(fd, tcp.Payload, 0, &addr)
+	err := syscall.Sendto(descriptor, tcp.Payload, 0, &sockaddr)
 	if err != nil {
 		fmt.Println(err)
 	} else {
@@ -34,12 +34,25 @@ func (tcp TCPIP) rawSocket() {
 }
 
 func (tcp *TCPIP) floodTarget(rType reflect.Type, rVal reflect.Value) {
+
+	var dest [4]byte
+	copy(dest[:], tcp.DST[:4])
+	fd, _ := syscall.Socket(syscall.AF_INET, syscall.SOCK_RAW, syscall.IPPROTO_RAW)
+	err := syscall.BindToDevice(fd, tcp.Adapter)
+	if err != nil {
+		exitErr("Bind to adapter failed", err)
+	}
+
+	addr := syscall.SockaddrInet4{
+		Port: int(tcp.DstPort),
+		Addr: dest,
+	}
 	var sent uint = 0
 	for sent = 0; sent < tcp.SendMax; sent++ {
 		tcp.genIP()
 		tcp.calcTCPChecksum()
 		tcp.buildPayload(rType, rVal)
-		tcp.rawSocket()
+		tcp.rawSocket(fd, addr)
 	}
 }
 
