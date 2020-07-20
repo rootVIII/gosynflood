@@ -31,3 +31,4 @@ sudo ./gosynflood -t 192.168.1.120 -p 80 -i wlp3s0 -n 500
   </code>
 </pre>
 
+Each packet's IP address is spoofed. MAC addresses are not spoofed however.
