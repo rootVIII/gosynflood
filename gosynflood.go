@@ -166,6 +166,8 @@ func main() {
 		os.Exit(1)
 	}
 
+	// T O D O: possibly make goroutines but receive them upon ctrl-c/sigint
+
 	packet.setTarget(*target, uint16(*tport), *nPackets)
 	packet.genIP()
 	packet.setPacket()
