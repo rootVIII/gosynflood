@@ -7,21 +7,6 @@ import (
 )
 
 func (tcp TCPIP) rawSocket(descriptor int, sockaddr syscall.SockaddrInet4) {
-
-	// var dest [4]byte
-	// copy(dest[:], tcp.DST[:4])
-
-	// fd, _ := syscall.Socket(syscall.AF_INET, syscall.SOCK_RAW, syscall.IPPROTO_RAW)
-	// err := syscall.BindToDevice(fd, tcp.Adapter)
-	// if err != nil {
-	// 	exitErr("Bind to adapter failed", err)
-	// }
-
-	// addr := syscall.SockaddrInet4{
-	// 	Port: int(tcp.DstPort),
-	// 	Addr: dest,
-	// }
-
 	err := syscall.Sendto(descriptor, tcp.Payload, 0, &sockaddr)
 	if err != nil {
 		fmt.Println(err)
@@ -40,7 +25,7 @@ func (tcp *TCPIP) floodTarget(rType reflect.Type, rVal reflect.Value) {
 	fd, _ := syscall.Socket(syscall.AF_INET, syscall.SOCK_RAW, syscall.IPPROTO_RAW)
 	err := syscall.BindToDevice(fd, tcp.Adapter)
 	if err != nil {
-		exitErr("Bind to adapter failed", err)
+		exitErr(fmt.Sprintf("Bind to adapter %s failed", tcp.Adapter), err)
 	}
 
 	addr := syscall.SockaddrInet4{
