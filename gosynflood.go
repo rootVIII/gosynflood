@@ -161,9 +161,9 @@ func main() {
 	}
 
 	if !foundIface {
-		fmt.Println("Invalid argument for -i <interface>")
-		fmt.Printf("Found interfaces: %s\n", strings.Join(foundIfaces, ", "))
-		os.Exit(1)
+		errmsg := "Invalid argument for -i <interface>\n"
+		errmsg += fmt.Sprintf("Found interfaces:\n%s\n", strings.Join(foundIfaces, ", "))
+		exitErr(errmsg, nil)
 	}
 
 	// T O D O: possibly make goroutines but receive them upon ctrl-c/sigint
