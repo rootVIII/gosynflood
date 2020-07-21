@@ -19,6 +19,8 @@ sudo ./gosynflood \
 
 # Example:
 sudo ./gosynflood -t 192.168.1.120 -p 80 -i wlp3s0 -n 500
+
+** The bin/builds directory has a compiled executable if you do not have Golang installed or do not want to build it yourself.
   </code>
 </pre>
 
