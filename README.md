@@ -29,12 +29,12 @@ Golang installed or do not want to build it yourself.
 -p port number (defaults to port 80 if not provided)
 -i network interface (running without -i will fail but suggest found interfaces)
 
-Enter control-C to stop the flood attack.
+Enter control-c to stop the flood attack.
   </code>
 </pre>
 
 Each packet's IP address is spoofed. <b>MAC addresses are not spoofed</b>.
-It is up to you to spoof your MAC Address if desired before usage.
+It is up to you to spoof your MAC Address beforehand if desired.
 
 This attack may only work on web servers susceptible to numerous half-open connections (SYN_RECV).
 
