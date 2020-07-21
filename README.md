@@ -1,6 +1,8 @@
 
 ### gosynflood - Repeatedly Send Crafted TCP SYN Packets with Raw Sockets
 
+###### intended for Ubuntu and other Debian distributions
+
 ###### USAGE:
 <pre>
   <code>
