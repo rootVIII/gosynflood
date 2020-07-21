@@ -55,7 +55,7 @@ It's a physical machine on a private network.
 <img src="https://github.com/rootVIII/gosynflood/blob/master/bin/screenshots/3.png">
 
 
-4. The half-open connections are visible via the command <code>netstat -na --tcp</code>
+4. During the attack the webserver should be unreachable at it's URL if it is susceptible. The half-open connections are visible via the command <code>netstat -na --tcp</code>
 <img src="https://github.com/rootVIII/gosynflood/blob/master/bin/screenshots/4.png">
 
 
