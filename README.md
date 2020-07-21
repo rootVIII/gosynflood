@@ -1,5 +1,5 @@
 
-### gosynflood - Repeatedly Send Raw TCP SYN Packets
+### gosynflood - Repeatedly Send Crafted TCP SYN Packets with Raw Sockets
 
 ###### USAGE:
 <pre>
@@ -20,7 +20,8 @@ sudo ./gosynflood \
 # Example:
 sudo ./gosynflood -t 192.168.1.120 -p 80 -i wlp3s0 -n 500
 
-** The bin/builds directory has a compiled executable if you do not have Golang installed or do not want to build it yourself.
+** The bin/builds directory has a compiled executable if you do not have
+Golang installed or do not want to build it yourself.
   </code>
 </pre>
 
@@ -29,16 +30,16 @@ sudo ./gosynflood -t 192.168.1.120 -p 80 -i wlp3s0 -n 500
   <code>
 -t private or public IP address of webserver
 -p port number (defaults to port 80 if not provided)
--i network interface (run program without -i to see found interfaces)
+-i network interface (running without -i will fail but suggest found interfaces)
 
 Enter control-C to stop the flood attack.
   </code>
 </pre>
 
-Each packet's IP address is spoofed. MAC addresses are not spoofed however.
+Each packet's IP address is spoofed. <b>MAC addresses are not spoofed</b>.
+It is up to you to spoof your MAC Address if desired before usage.
 
-This attack may only work on web servers that for some reason do not have a method
-of preventing numerous half-open connections (SYN_RECV).
+This attack may only work on web servers susceptible to numerous half-open connections (SYN_RECV).
 
 To demonstrate this, a small Ubuntu Mate running Apache2 will act as the target.
 It's a physical machine on a private network.
