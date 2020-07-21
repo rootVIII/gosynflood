@@ -2,6 +2,7 @@ package main
 
 /*
 	rootVIII gosynflood - synflood DDOS tool
+	2020
 */
 
 import (
