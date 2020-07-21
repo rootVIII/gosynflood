@@ -12,10 +12,7 @@ go get github.com/rootVIII/gosynflood
 go build .
 
 # raw sockets require root privileges when executing:
-sudo ./gosynflood \
-    -t &lt;target IPV4 address&gt; \
-    -p &lt;port number&gt; \
-    -i &lt;network interface&gt;
+sudo ./gosynflood -t &lt;target IPV4 address&gt; -p &lt;port number&gt; -i &lt;network interface&gt;
 
 # Example:
 sudo ./gosynflood -t 192.168.1.120 -p 80 -i wlp3s0
