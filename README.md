@@ -9,6 +9,10 @@
 # get the project
 go get github.com/rootVIII/gosynflood
 
+or
+
+git clone https://github.com/rootVIII/gosynflood.git
+
 
 # Navigate to project root and build:
 go build .
