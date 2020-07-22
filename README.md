@@ -54,7 +54,7 @@ It's a physical machine on a private network.
 <img src="https://github.com/rootVIII/gosynflood/blob/master/bin/screenshots/5.png">
 
 
-3. The initial SYNs are visible in Wireshark on the target
+3. The initial SYNs are visible in Wireshark on the target, purposefully never completing the thee 3-way handshake:
 <img src="https://github.com/rootVIII/gosynflood/blob/master/bin/screenshots/2.png">
 <img src="https://github.com/rootVIII/gosynflood/blob/master/bin/screenshots/3.png">
 
