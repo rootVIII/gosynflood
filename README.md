@@ -30,7 +30,8 @@ Golang installed or do not want to build it yourself.
   <code>
 -t private or public IP address of target webserver
 -p target webserver's port number (defaults to port 80 if not provided)
--i your network interface (running without -i will fail, but it will suggest all found interfaces, ie: lo, wlpxxx, eth0 etc.)
+-i your network interface (running without -i will fail,
+     but it will suggest all found interfaces, ie: lo, wlpxxx, eth0 etc.)
 
 Enter control-c to stop the flood attack.
   </code>
