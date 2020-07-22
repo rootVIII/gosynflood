@@ -28,9 +28,9 @@ Golang installed or do not want to build it yourself.
 ###### CLI OPTIONS:
 <pre>
   <code>
--t private or public IP address of webserver
--p port number (defaults to port 80 if not provided)
--i network interface (running without -i will fail but suggest found interfaces)
+-t private or public IP address of target webserver
+-p target webserver's port number (defaults to port 80 if not provided)
+-i your network interface (running without -i will fail, but it will suggest all found interfaces, ie: lo, wlpxxx, eth0 etc.)
 
 Enter control-c to stop the flood attack.
   </code>
