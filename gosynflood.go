@@ -120,18 +120,15 @@ func (tcp *TCPIP) genIP() {
 	}
 }
 
-func exitErr(msg string, reason error) {
-	fmt.Println(msg)
-	if reason != nil {
-		fmt.Printf("%v\n", reason)
-	}
+func exitErr(reason error) {
+	fmt.Println(reason)
 	os.Exit(1)
 }
 
 func main() {
 	user, err := user.Current()
 	if err != nil || user.Name != "root" {
-		exitErr("Root privileges required for execution", err)
+		exitErr(fmt.Errorf("Root privileges required for execution"))
 	}
 
 	target := flag.String("t", "", "Target IPV4 address")
@@ -140,13 +137,13 @@ func main() {
 	flag.Parse()
 
 	if len(*target) < 1 || net.ParseIP(*target) == nil {
-		exitErr("required argument: -t <Target IP addr>", nil)
+		exitErr(fmt.Errorf("required argument: -t <target IP addr>"))
 	}
 	if strings.Count(*target, ".") != 3 || strings.Contains(*target, ":") {
-		exitErr(fmt.Sprintf("Invalid IPV4 Address: %s\n", *target), nil)
+		exitErr(fmt.Errorf("invalid IPV4 address: %s", *target))
 	}
 	if *tport > 0xFFFF {
-		exitErr(fmt.Sprintf("Invalid Port: %d\n", *tport), nil)
+		exitErr(fmt.Errorf("invalid port: %d", *tport))
 	}
 
 	var packet = &TCPIP{}
@@ -160,9 +157,9 @@ func main() {
 	}
 
 	if !foundIface {
-		errmsg := "Invalid argument for -i <interface>\n"
-		errmsg += fmt.Sprintf("Found interfaces:\n%s\n", strings.Join(foundIfaces, ", "))
-		exitErr(errmsg, nil)
+		msg := "Invalid argument for -i <interface> Found: %s"
+		errmsg := fmt.Errorf(msg, strings.Join(foundIfaces, ", "))
+		exitErr(errmsg)
 	}
 
 	packet.setTarget(*target, uint16(*tport))
