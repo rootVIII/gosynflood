@@ -122,7 +122,7 @@ func (tcp *TCPIP) genIP() {
 
 func exitErr(reason error) {
 	fmt.Println(reason)
-	os.Exit(2)
+	os.Exit(1)
 }
 
 func main() {
