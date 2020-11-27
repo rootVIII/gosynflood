@@ -25,7 +25,7 @@ func (tcp *TCPIP) floodTarget(rType reflect.Type, rVal reflect.Value) {
 	fd, _ := syscall.Socket(syscall.AF_INET, syscall.SOCK_RAW, syscall.IPPROTO_RAW)
 	err := syscall.BindToDevice(fd, tcp.Adapter)
 	if err != nil {
-		exitErr(fmt.Errorf("bind to adapter %s failed", tcp.Adapter))
+		panic(fmt.Errorf("bind to adapter %s failed: %v", tcp.Adapter, err))
 	}
 
 	addr := syscall.SockaddrInet4{
