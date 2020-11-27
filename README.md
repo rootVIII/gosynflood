@@ -19,9 +19,6 @@ sudo ./gosynflood -t &lt;target IPV4 address&gt; -p &lt;port number&gt; -i &lt;n
 
 # Example:
 sudo ./gosynflood -t 192.168.1.120 -p 80 -i wlp3s0
-
-** The bin/builds directory has a compiled executable if you do not have
-Golang installed or do not want to build it yourself.
   </code>
 </pre>
 
@@ -47,20 +44,20 @@ It's a physical machine on a private network.
 
 <hr>
 1. The tcp_syncookies flag was set to 0 (to make the target vulnerable for demonstration purposes) and the webserver was started on the target:
-<img src="https://github.com/rootVIII/gosynflood/blob/master/bin/screenshots/1.png">
+<img src="https://github.com/rootVIII/gosynflood/blob/master/screenshots/1.png">
 
 
 2. The attacker machine (a separate physical machine also running Ubuntu) executes the gosynflood exe with root privileges:
-<img src="https://github.com/rootVIII/gosynflood/blob/master/bin/screenshots/5.png">
+<img src="https://github.com/rootVIII/gosynflood/blob/master/screenshots/5.png">
 
 
 3. The initial SYNs are visible in Wireshark on the target, purposefully never completing the thee 3-way handshake:
-<img src="https://github.com/rootVIII/gosynflood/blob/master/bin/screenshots/2.png">
-<img src="https://github.com/rootVIII/gosynflood/blob/master/bin/screenshots/3.png">
+<img src="https://github.com/rootVIII/gosynflood/blob/master/screenshots/2.png">
+<img src="https://github.com/rootVIII/gosynflood/blob/master/screenshots/3.png">
 
 
 4. During the attack the webserver should be unreachable at it's URL if it is susceptible. The half-open connections are visible via the command <code>netstat -na --tcp</code>
-<img src="https://github.com/rootVIII/gosynflood/blob/master/bin/screenshots/4.png">
+<img src="https://github.com/rootVIII/gosynflood/blob/master/screenshots/4.png">
 
 
 
