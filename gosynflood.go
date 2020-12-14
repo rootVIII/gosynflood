@@ -162,6 +162,12 @@ func main() {
 		exitErr(errmsg)
 	}
 
+	defer func() {
+		if err := recover(); err != nil {
+			exitErr(fmt.Errorf("error: %v", err))
+		}
+	}()
+
 	packet.setTarget(*target, uint16(*tport))
 	packet.genIP()
 	packet.setPacket()
