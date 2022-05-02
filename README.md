@@ -6,19 +6,18 @@
 ###### USAGE:
 <pre>
   <code>
-# go get or git clone the project
-go get github.com/rootVIII/gosynflood
+# Clone project:
 git clone https://github.com/rootVIII/gosynflood.git
 
-
-# Navigate to project root and build:
-go build .
+# Build and run:
+cd &lt;project root&gt;
+go build -o bin/gosynflood
 
 # raw sockets require root privileges when executing:
-sudo ./gosynflood -t &lt;target IPV4 address&gt; -p &lt;port number&gt; -i &lt;network interface&gt;
+sudo ./bin/gosynflood  -t &lt;target IPV4 address&gt; -p &lt;port number&gt; -i &lt;network interface&gt;
 
 # Example:
-sudo ./gosynflood -t 192.168.1.120 -p 80 -i wlp3s0
+sudo ./bin/gosynflood  -t 192.168.1.120 -p 80 -i wlp3s0
   </code>
 </pre>
 
@@ -44,20 +43,20 @@ It's a physical machine on a private network.
 
 <hr>
 1. The tcp_syncookies flag was set to 0 (to make the target vulnerable for demonstration purposes) and the webserver was started on the target:
-<img src="https://github.com/rootVIII/gosynflood/blob/master/screenshots/1.png">
+<img src="https://user-images.githubusercontent.com/30498791/166178559-b8ad5922-b12c-4ce0-883c-7205a22721b8.png">
 
 
 2. The attacker machine (a separate physical machine also running Ubuntu) executes the gosynflood exe with root privileges:
-<img src="https://github.com/rootVIII/gosynflood/blob/master/screenshots/5.png">
+<img src="https://user-images.githubusercontent.com/30498791/166178555-53635637-9b62-4afb-af36-f36f0354902d.png">
 
 
 3. The initial SYNs are visible in Wireshark on the target, purposefully never completing the thee 3-way handshake:
-<img src="https://github.com/rootVIII/gosynflood/blob/master/screenshots/2.png">
-<img src="https://github.com/rootVIII/gosynflood/blob/master/screenshots/3.png">
+<img src="https://user-images.githubusercontent.com/30498791/166178558-fffa57f5-3083-4af2-9a7e-63225cd23d7c.png">
+<img src="https://user-images.githubusercontent.com/30498791/166178557-d394bd6f-9a16-4711-bbf6-8c46c5847aa5.png">
 
 
 4. During the attack the webserver should be unreachable at it's URL if it is susceptible. The half-open connections are visible via the command <code>netstat -na --tcp</code>
-<img src="https://github.com/rootVIII/gosynflood/blob/master/screenshots/4.png">
+<img src="https://user-images.githubusercontent.com/30498791/166178556-ea9fa18e-4f90-40c3-b2dc-8bc748cd7632.png">
 
 
 
