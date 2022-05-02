@@ -1,3 +1,3 @@
-module github.com/rootVIII/gosynflood
+module gosynflood
 
-go 1.15
+go 1.18
