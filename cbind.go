@@ -60,7 +60,7 @@ char* getifaces()
 import "C"
 
 // getInterfaces binds to the C getifaces() function.
-func (tcp TCPIP) getInterfaces() []string {
+func (tcp *TCPIP) getInterfaces() []string {
 	ifacesPTR := C.getifaces()
 	var ifaces string = C.GoString(ifacesPTR)
 	defer C.free(unsafe.Pointer(ifacesPTR))

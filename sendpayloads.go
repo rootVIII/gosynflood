@@ -6,7 +6,7 @@ import (
 	"syscall"
 )
 
-func (tcp TCPIP) rawSocket(descriptor int, sockaddr syscall.SockaddrInet4) {
+func (tcp *TCPIP) rawSocket(descriptor int, sockaddr syscall.SockaddrInet4) {
 	err := syscall.Sendto(descriptor, tcp.Payload, 0, &sockaddr)
 	if err != nil {
 		fmt.Println(err)

@@ -24,17 +24,17 @@ type SYNPacket struct {
 	Adapter   string
 }
 
-func (s SYNPacket) randByte() byte {
+func (s *SYNPacket) randByte() byte {
 	randomUINT8 := make([]byte, 1)
 	rand.Read(randomUINT8)
 	return randomUINT8[0]
 }
 
-func (s SYNPacket) invalidFirstOctet(val byte) bool {
+func (s *SYNPacket) invalidFirstOctet(val byte) bool {
 	return val == 0x7F || val == 0xC0 || val == 0xA9 || val == 0xAC
 }
 
-func (s SYNPacket) leftshiftor(lval uint8, rval uint8) uint32 {
+func (s *SYNPacket) leftshiftor(lval uint8, rval uint8) uint32 {
 	return (uint32)(((uint32)(lval) << 8) | (uint32)(rval))
 }
 
@@ -126,9 +126,9 @@ func exitErr(reason error) {
 }
 
 func main() {
-	user, err := user.Current()
-	if err != nil || user.Name != "root" {
-		exitErr(fmt.Errorf("Root privileges required for execution"))
+	username, err := user.Current()
+	if err != nil || username.Name != "root" {
+		exitErr(fmt.Errorf("root privileges required for execution"))
 	}
 
 	target := flag.String("t", "", "Target IPV4 address")
@@ -157,7 +157,7 @@ func main() {
 	}
 
 	if !foundIface {
-		msg := "Invalid argument for -i <interface> Found: %s"
+		msg := "invalid argument for -i <interface> Found: %s"
 		errmsg := fmt.Errorf(msg, strings.Join(foundIfaces, ", "))
 		exitErr(errmsg)
 	}
